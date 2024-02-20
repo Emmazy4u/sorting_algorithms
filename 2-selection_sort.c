@@ -1,68 +1,48 @@
 #include "sort.h"
 
 /**
- * get_max - Get the maximum value in an array of integers.
+ * selection_sort - Sort an array of integers in ascending order
+ *                  using the selection sort
+ *  algorithm.
  * @array: An array of integers.
  * @size: The size of the array.
  *
- * Return: The maximum integer in the array.
+ * Description: Prints the array after each swap.
  */
-int get_max(int *array, int size)
+void selection_sort(int *array, size_t size)
 {
-	int max, i;
-
-	for (max = array[0], i = 1; i < size; i++)
-	{
-		if (array[i] > max)
-			max = array[i];
-	}
-
-	return (max);
-}
-
-/**
- * counting_sort - Sort an array of integers in ascending order
- *                 using the counting sort algorithm.
- * @array: An array of integers.
- * @size: The size of the array.
- *
- * Description: Prints the counting array after setting it up.
- */
-void counting_sort(int *array, size_t size)
-{
-	int *count, *sorted, max, i;
+	size_t i, j;
 
 	if (array == NULL || size < 2)
 		return;
 
-	sorted = malloc(sizeof(int) * size);
-	if (sorted == NULL)
-		return;
-	max = get_max(array, size);
-	count = malloc(sizeof(int) * (max + 1));
-	if (count == NULL)
+	for (i = 0; i < size - 1; i++)
 	{
-		free(sorted);
-		return;
+		size_t min_index = i;
+		for (j = i + 1; j < size; j++)
+		{
+			if (array[j] < array[min_index])
+				min_index = j;
+		}
+
+		if (i != min_index)
+		{
+			swap_integer(&array[i], &array[min_index]);
+			print_array(array, size);
+		}
 	}
+}
 
-	for (i = 0; i < (max + 1); i++)
-		count[i] = 0;
-	for (i = 0; i < (int)size; i++)
-		count[array[i]] += 1;
-	for (i = 0; i < (max + 1); i++)
-		count[i] += count[i - 1];
-	print_array(count, max + 1);
+/**
+ * swap_integer - Swap two integers in an array.
+ * @a: The first integer to swap.
+ * @b: The second integer to swap.
+ */
+void swap_integer(int *a, int *b)
+{
+	int tmp;
 
-	for (i = 0; i < (int)size; i++)
-	{
-		sorted[count[array[i]] - 1] = array[i];
-		count[array[i]] -= 1;
-	}
-
-	for (i = 0; i < (int)size; i++)
-		array[i] = sorted[i];
-
-	free(sorted);
-	free(count);
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
