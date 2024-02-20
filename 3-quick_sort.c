@@ -1,16 +1,28 @@
 #include "sort.h"
 
-void swap_ints(int *a, int *b);
-int lomuto_partition(int *array, size_t size, int left, int right);
-void lomuto_sort(int *array, size_t size, int left, int right);
-void quick_sort(int *array, size_t size);
+/**
+ * quick_sort - Sort an array of integers in ascending
+ *              order using the quicksort algorithm.
+ * @array: An array of integers.
+ * @size: The size of the array.
+ *
+ * Description: Uses the Lomuto partition scheme. Prints
+ *              the array after each swap of two elements.
+ */
+void quick_sort(int *array, size_t size)
+{
+	if (array == NULL || size < 2)
+		return;
+
+	lomuto_sort(array, size, 0, size - 1);
+}
 
 /**
- * swap_ints - Swap two integers in an array.
+ * swap_integer - Swap two integers in an array.
  * @a: The first integer to swap.
  * @b: The second integer to swap.
  */
-void swap_ints(int *a, int *b)
+void swap_integer(int *a, int *b)
 {
 	int tmp;
 
@@ -40,7 +52,7 @@ int lomuto_partition(int *array, size_t size, int left, int right)
 		{
 			if (above < below)
 			{
-				swap_ints(array + below, array + above);
+				swap_integer(array + below, array + above);
 				print_array(array, size);
 			}
 			above++;
@@ -49,7 +61,7 @@ int lomuto_partition(int *array, size_t size, int left, int right)
 
 	if (array[above] > *pivot)
 	{
-		swap_ints(array + above, pivot);
+		swap_integer(array + above, pivot);
 		print_array(array, size);
 	}
 
@@ -75,21 +87,4 @@ void lomuto_sort(int *array, size_t size, int left, int right)
 		lomuto_sort(array, size, left, part - 1);
 		lomuto_sort(array, size, part + 1, right);
 	}
-}
-
-/**
- * quick_sort - Sort an array of integers in ascending
- *              order using the quicksort algorithm.
- * @array: An array of integers.
- * @size: The size of the array.
- *
- * Description: Uses the Lomuto partition scheme. Prints
- *              the array after each swap of two elements.
- */
-void quick_sort(int *array, size_t size)
-{
-	if (array == NULL || size < 2)
-		return;
-
-	lomuto_sort(array, size, 0, size - 1);
 }
